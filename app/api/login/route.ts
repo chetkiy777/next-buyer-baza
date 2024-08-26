@@ -4,10 +4,21 @@ import { addDoc, collection, getDocs, getDoc, where, query, doc, getDocFromCache
 import bcrypt from "bcrypt"
 
 
-export async function POST(req = NextRequest, response = NextResponse) {
+type Result = {
+    status: string,
+    message: string
+}
+
+
+export async function POST(req: Request, res: Response) {
 
     const body = await req.json()
     const {email, password} = body
+
+    let result: Result = {
+        status: "",
+        message: ""
+    } 
 
     const usersRef = collection(db, "users")
     const q = query(usersRef, where("email", "==", email.toString()));
@@ -29,14 +40,14 @@ export async function POST(req = NextRequest, response = NextResponse) {
     let hashResult = await bcrypt.compare(password, savedPass)
 
     if (hashResult) {
-        response.status = "success";
-        response.message = "Welcome. You login!"
+        result.status = "success";
+        result.message = "Welcome. You login!"
 
     } else {
-        response.status = "error";
-        response.message = "Incorrect password! Try agin"
+        result.status = "error";
+        result.message = "Incorrect password! Try agin"
     }
      
-    return NextResponse.json(response)
+    return NextResponse.json(result)
     
 }

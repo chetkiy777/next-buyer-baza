@@ -7,8 +7,7 @@ import styled from "styled-components"
 import Backdrop from "./Backdrop"
 import { CustomInput } from "../styles/CustomInput"
 import { useEffect, useState } from "react"
-import axios from "axios"
-
+import Logs from "./Logs"
 
 const EditButton = styled.button`
     text-align: center;
@@ -33,28 +32,7 @@ const DomainsList = (props) => {
 
     const [filterValue, setFilterValue] = useState("")
     const [filteredDomains, setFilteredDomains ] = useState([])
-
-    // useEffect(() => {
-    //     async function getData() {
-    //         let data = await axios.get("https://api.monday.com/v2", {
-    //             headers: {
-    //                 'Authorization': process.env.MONDAY_API_TOKEN,
-    //                 'Content-Type': 'application/json',
-    //                 'Access-Control-Allow-Origin': 'http://localhost:3000',
-    //                 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-    //                 'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
-    //                 'Access-Control-Allow-Credentials': true,
-    //             },
-    //             body: {
-    //                 'query': '{ boards (ids:1598927804) {  name items_page { items { name column_values {id type text} } } } }'
-    //             }
-    //         })
-
-    //         console.log(data)
-    //     }
-
-    //     getData()
-    // })
+    const [isLogsVisible, setIsLogsVisible] = useState(true);
 
     useEffect(() => {
         if (domains) {
@@ -108,6 +86,8 @@ const DomainsList = (props) => {
             </List>
 
         </Flex>
+
+        {isLogsVisible && <Logs />}
     </Container>
 
 }
