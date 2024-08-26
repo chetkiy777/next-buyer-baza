@@ -22,7 +22,7 @@ export default function RegisterForm() {
 
         try {   
 
-            const result = await axios.post("http://localhost:3000/api/register", {
+            const result = await axios.post("https://next-buyer-baza.vercel.app/api/register", {
                 email,
                 password
             })

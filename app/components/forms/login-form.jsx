@@ -31,7 +31,7 @@ export default function LoginForm() {
 
         try {   
 
-            const response = await axios.post("http://localhost:3000/api/login", {
+            const response = await axios.post("https://next-buyer-baza.vercel.app/api/login", {
                 email,
                 password
             })

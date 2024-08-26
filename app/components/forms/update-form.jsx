@@ -26,7 +26,7 @@ export default function Updateform() {
 
         try {   
 
-            const response = await axios.put("http://localhost:3000/api/update", {
+            const response = await axios.put("https://next-buyer-baza.vercel.app//api/update", {
                 email,
                 newEmail,
                 newPassword
