@@ -7,6 +7,20 @@ import DomainsList from "./components/DomainsList";
 import Backdrop from "./components/Backdrop";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import styled from "styled-components";
+import Logs from "./components/Logs";
+
+
+ const LogsButton = styled.button`
+  position: absolute;
+  display: flex;
+  gap: 5px;
+  font-weight: 700;
+
+  bottom: 5px;
+  left: 5px;
+
+ `
 
 export default function Home() {
 
@@ -14,11 +28,15 @@ export default function Home() {
   const [isVisible, setIsVisible] = useState(false)
   const [domainId, setDomainId] = useState("")
   const [domainName, setDomainName] = useState("")
-
+  const [isLogsVisible, setIsLogsVisible] = useState(false)
 
   const [userEmail, setUserEmail] = useState("")
-
+  
   const router = useRouter()
+
+  const hideLogs = () => {
+    setIsLogsVisible(false)
+  }
 
   useEffect(() => { 
     let data = localStorage.getItem("auth")
@@ -51,14 +69,25 @@ export default function Home() {
     <Flex direction="column">
         <Header email={userEmail}/>
 
-        <Flex mt="40px">
+        <Flex>
           {
-            isVisible &&  <Backdrop domainId={domainId} domainName={domainName} closemodal={closeModal}/>
+            isVisible &&  <Backdrop domainid={domainId} domainname={domainName} closemodal={closeModal}/>
           }
 
           <DomainsList showmodal={showConfigModal} />
 
         </Flex>
+
+        <LogsButton onClick={() => setIsLogsVisible(!isLogsVisible)}>logs
+          <Image 
+            src="/logs.svg"
+            height="18"
+            width="18"
+            alt="icon"
+          />
+
+        </LogsButton>
+        {isLogsVisible && <Logs hidelogs={hideLogs}/>}
     </Flex>
   </>
   );

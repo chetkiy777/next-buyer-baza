@@ -2,26 +2,17 @@
 
 import { Container } from "../styles/Container"
 import { Flex } from "../styles/Flex"
-import { domains } from "../mokData/domains"
 import styled from "styled-components"
-import Backdrop from "./Backdrop"
 import { CustomInput } from "../styles/CustomInput"
+import {MainTitle} from "../styles/MainTitle"
 import { useEffect, useState } from "react"
-import Logs from "./Logs"
-
-const EditButton = styled.button`
-    text-align: center;
-    max-width: 40px;
-    border: none;
-    background-color: #000;
-    color: #fff;
-    padding: 4px;
-    border-radius: 4px;
-    margin-left: 15px;
-`
+import {logger} from "../helpers/logger"
+import Image from "next/image"
 
 const List = styled.ul`
     & li {
+        display: flex;
+        align-items: center;
         margin-top: 10px;
         margin-bottom: 10px;
     }
@@ -32,13 +23,39 @@ const DomainsList = (props) => {
 
     const [filterValue, setFilterValue] = useState("")
     const [filteredDomains, setFilteredDomains ] = useState([])
-    const [isLogsVisible, setIsLogsVisible] = useState(true);
+    const [data, setData] = useState({})
 
     useEffect(() => {
-        if (domains) {
-            setFilteredDomains([...domains])
+        async function getDomains() {
+            let query = "query { boards (ids: 1598927804) {items_page {cursor items {id name }}}}";
+            const token = process.env.MONDAY_API_TOKEN
+
+            await fetch('https://api.monday.com/v2', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization' : token,
+                  'API-Version' : '2023-04'
+                 },
+                 body: JSON.stringify({
+                   query: query
+                 })
+                }).then(res => res.json())
+                .then(res => {
+                    let boards = res.data.boards;
+                    let domainNames = boards[0]["items_page"].items
+                    setFilteredDomains(domainNames)
+                    setData(domainNames)
+                    
+                    logger({status: "success", message: "Got response with domains from Monday.com"})
+                })
+                .catch(e => console.log(e))
         }
-    }, [])
+
+        getDomains()
+    },[])
+
+
 
 
     useEffect(() => {
@@ -50,7 +67,7 @@ const DomainsList = (props) => {
                 setFilteredDomains(findedDomains)
             }
         } else {
-            setFilteredDomains([...domains])
+            setFilteredDomains(data)
 
         }
     }, [filterValue])
@@ -62,12 +79,19 @@ const DomainsList = (props) => {
         <Flex direction="column">
           
             <Flex justify="center">
-                <h3>Your Domains:</h3>
+                <MainTitle>Domains:</MainTitle>
             </Flex>
 
-            <Flex mt="10px" mb="10px" justify="flex-end">
+            <Flex mt="10px" mb="10px" justify="flex-start">
+                <Image 
+                    src="/search.svg"
+                    height="28"
+                    width="28"
+                    alt="icon"
+                />
+
                 <CustomInput 
-                    width="120px"   
+                    width="200px"   
                     type="text" 
                     placeholder="Find" 
                     value={filterValue} 
@@ -77,9 +101,18 @@ const DomainsList = (props) => {
 
             <List>
                 {
-                    filteredDomains && filteredDomains.map(d => <li key={d.id}>
+                    filteredDomains.length && filteredDomains.map(d => <li key={d.id}>
                             <span>{d.name}</span>
-                            <EditButton onClick={() => props.showmodal(d.id, d.name)}>edit</EditButton>
+                            <button  onClick={() => props.showmodal(d.id, d.name)}>
+                                <Image 
+                                    src="/edit.svg"
+                                    width="18"
+                                    height="18"
+                                    style={{marginLeft: "10px"}}
+                                    alt="icon"
+                                />
+                            </button>
+      
                         </li>
                     )
                 }
@@ -87,7 +120,6 @@ const DomainsList = (props) => {
 
         </Flex>
 
-        {isLogsVisible && <Logs />}
     </Container>
 
 }

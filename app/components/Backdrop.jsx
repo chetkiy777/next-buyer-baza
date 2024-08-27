@@ -1,26 +1,26 @@
-import { Container } from "../styles/Container"
 import { Flex } from "../styles/Flex"
-import { domains } from "../mokData/domains"
 import CustomDropdown from "../styles/Dropdown"
 import { useEffect, useState } from "react"
 import { CustomInput } from "../styles/CustomInput"
 import { Title } from "../styles/Title"
 import styled from "styled-components"
-
+import Image from "next/image"
+import { MainTitle } from "../styles/MainTitle"
 
 
 const Wrapper = styled.div`
     position: absolute;
     top: 100px;
-    left: 20px;
+    left: 10%;
     border: 2px solid #000;
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
     margin: 0 auto;
-    padding: 10px 20px;
+    padding: 20px 30px;
     background-color: #fff;
+    box-shadow: 5px 5px 2px 0px rgba(0,0,0,0.75);
 
 
 `
@@ -29,28 +29,22 @@ const CloseButton = styled.button`
     position: absolute;
     top: 10px;
     right: 10px;
-    border: none;
-    background-color: #000;
-    color: #fff;
-    text-align: center;
-    border-radius: 8px;
-    width: 40px;
 `
 
 const ApplyButton = styled.button`
     border: none;
     text-align: center;
-    padding: 4px 8px;
-    background-color: #000;
-    color: #fff;
-    font-weight: 500;
-    border-radius: 8px;
     align-self: center;
     margin-top: 20px;
 
+    &:hover,
+    &:focus {
+        transform: scale(1.2)
+    }
+
 `
 
-const Backdrop = (props) => {
+const Backdrop = ({domainid, domainname, closemodal}) => {
 
 
     const redirTypes = ["iframe", "302"]
@@ -65,8 +59,8 @@ const Backdrop = (props) => {
 
     const changeClocking = () => {
         const responseBody = {
-            "id": props.domainId,
-            "domain": props.domainName,
+            "id": domainid,
+            "domain": domainname,
             "cloacking": clockingType,
             "redirect": redirType,
             "geo": geo,
@@ -78,10 +72,10 @@ const Backdrop = (props) => {
     }
 
 
-    return <Wrapper {...props}>
+    return <Wrapper>
         <Flex direction="column">
 
-            <h2>{props.domainName}</h2>
+            <MainTitle style={{fontSize: "1.3rem"}}>{domainname}</MainTitle>
 
 
             <Flex align="center" justify="space-between" mt="20px">
@@ -142,7 +136,7 @@ const Backdrop = (props) => {
                         name="amount"
                         value={refLink}
                         onChange={(e) => setRefLink(e.target.value)}
-                        width="100px"
+                        width="170px"
                     />
                 </Flex>
 
@@ -153,10 +147,27 @@ const Backdrop = (props) => {
 
 
             
-            <ApplyButton onClick={changeClocking}>change</ApplyButton>
+            <ApplyButton onClick={changeClocking}>
+                <Image
+                    src="/apply.svg" 
+                    width="50"
+                    height="50"
+                    alt="apply"
+                />
+                
+            </ApplyButton>
 
-        </Flex>        
-        <CloseButton onClick={() => props.closemodal()}>x</CloseButton>
+        </Flex>      
+
+        <CloseButton onClick={closemodal}>
+            <Image 
+                src="/close2.svg"
+                width="18"
+                height="18"
+                alt="icon"
+            />
+        </CloseButton>
+
     </Wrapper>
 
 }

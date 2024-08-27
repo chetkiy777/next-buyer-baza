@@ -19,9 +19,10 @@ const DropdownButton = styled.button`
     border-radius: 8px;
     background: transparent;
     color: #000;
-    padding: 2px;
+    padding: 1px;
     font-size: 1em;
-    min-width: 140px;
+    min-width: 120px;
+    box-shadow: 5px 5px 2px 0px rgba(0,0,0,0.75);
     
 `
 
@@ -66,7 +67,7 @@ const DropdownContent = styled.ul`
 
 const DropdownItem = styled.li`
     padding: 10px;
-    font-size: 1rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.2s;
     

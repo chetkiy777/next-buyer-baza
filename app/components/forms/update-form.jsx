@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Notiflix from "notiflix";
-
+import { logger } from "../../helpers/logger";
 
 export default function Updateform() {
 
@@ -26,7 +26,7 @@ export default function Updateform() {
 
         try {   
 
-            const response = await axios.put("https://next-buyer-baza.vercel.app//api/update", {
+            const response = await axios.put(`${host}/api/update`, {
                 email,
                 newEmail,
                 newPassword
@@ -39,6 +39,8 @@ export default function Updateform() {
             } else {
                 Notiflix.Notify.failure(response.data.message)
             }
+
+            logger(`status: ${response.data.status} \n message: ${response.data.message} `)
 
             
         } catch(err) {

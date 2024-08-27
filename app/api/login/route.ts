@@ -9,6 +9,13 @@ type Result = {
     message: string
 }
 
+// const connectionType = process.env.CONNETCTION_TYPE 
+// const host = ''
+
+// if (connectionType === 'dev') {
+//     host = ''
+// }
+
 
 export async function POST(req: Request, res: Response) {
 

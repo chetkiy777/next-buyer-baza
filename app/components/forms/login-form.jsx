@@ -5,7 +5,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Notiflix from "notiflix";
-
+import {host} from "../../host_setting"
+import { logger } from "../../helpers/logger";
 
 export default function LoginForm() {
 
@@ -31,7 +32,7 @@ export default function LoginForm() {
 
         try {   
 
-            const response = await axios.post("https://next-buyer-baza.vercel.app/api/login", {
+            const response = await axios.post(`${host}/api/login`, {
                 email,
                 password
             })
@@ -46,6 +47,9 @@ export default function LoginForm() {
             } else {
                 Notiflix.Notify.failure(response.data.message)
             }
+
+            logger({status: response.data.status, message: response.data.message})
+            
 
             
         } catch(err) {

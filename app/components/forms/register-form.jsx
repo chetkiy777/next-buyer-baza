@@ -5,6 +5,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Notiflix from "notiflix";
+import {host} from "../../host_setting"
+import { logger } from "../../helpers/logger";
 
 export default function RegisterForm() {
 
@@ -22,7 +24,7 @@ export default function RegisterForm() {
 
         try {   
 
-            const result = await axios.post("https://next-buyer-baza.vercel.app/api/register", {
+            const result = await axios.post(`${host}/api/register`, {
                 email,
                 password
             })
@@ -34,6 +36,8 @@ export default function RegisterForm() {
             } else {
                 Notiflix.Notify.failure(result.data.message)
             }
+
+            logger(`status: ${response.data.status} \n message: ${response.data.message} `)
 
         } catch(err) {
             console.error(err)
