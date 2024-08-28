@@ -6,11 +6,12 @@ import { Flex } from "../styles/Flex"
 import { useRouter } from "next/navigation"
 import Notiflix from "notiflix"
 import Image from 'next/image'
+import Link from "next/link"
+
 
 const RightBlock = styled.div`
     display: flex;
     gap: 5px;
-    
 
 `
 
@@ -30,22 +31,27 @@ const Header = ({email}) => {
         router.push('/login')
     }
 
+    const gotoUpdate = () => {
+        router.push('/update')
+    }
+
 
     return <LocalWrapper>
         <Container>
             <Flex align="center" justify="space-between">
-                <span>Pixoram</span>
+                <Link href="/" style={{fontWeight: "700", fontSize: "22px"}}>pixoram</Link>
                 <RightBlock>
-                    <Image 
-                        src="/profilew.svg"
-                        width="18"
-                        height="18"
-                        alt="icon"
-                    />
-                    <span>{email}</span>
+                    <button style={{display: "flex", alignItems: "center", gap: "5px"}} onClick={gotoUpdate}>
+                        <Image 
+                            src="/profilew.svg"
+                            width="18"
+                            height="18"
+                            alt="icon"
+                        />
+                        <span>{email}</span>
+                    </button>
 
-
-                    <button style={{}} onClick={logout}>
+                    <button onClick={logout}>
                         <Image
                             src="/exit.svg"
                             height="18"

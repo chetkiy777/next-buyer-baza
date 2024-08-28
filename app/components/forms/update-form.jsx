@@ -1,9 +1,8 @@
 'use client'
 import { useState } from "react";
-import Button from "../button";
+import Button from "../../styles/Button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import Notiflix from "notiflix";
 import { logger } from "../../helpers/logger";
 

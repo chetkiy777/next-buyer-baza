@@ -53,6 +53,7 @@ export default function LoginForm() {
 
             
         } catch(err) {
+            logger({status: "error", message: err.message})
             console.error(err)
         }
 
@@ -71,7 +72,7 @@ export default function LoginForm() {
 
             <div>
                 <p>Enter password</p>
-                <input className={"px-4 py-2 shadow-gray-950 shadow-md focus:outline-none focus:shadow-gray-950 focus:shadow-lg"} type="text" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                <input className={"px-4 py-2 shadow-gray-950 shadow-md focus:outline-none focus:shadow-gray-950 focus:shadow-lg"} type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
             </div>
                 
             <Button>Login</Button>

@@ -8,6 +8,8 @@ import {MainTitle} from "../styles/MainTitle"
 import { useEffect, useState } from "react"
 import {logger} from "../helpers/logger"
 import Image from "next/image"
+import {detecter} from "../helpers/buyer_detect"
+
 
 const List = styled.ul`
     & li {
@@ -16,7 +18,6 @@ const List = styled.ul`
         margin-top: 10px;
         margin-bottom: 10px;
     }
-
 `
 
 const DomainsList = (props) => {
@@ -25,10 +26,25 @@ const DomainsList = (props) => {
     const [filteredDomains, setFilteredDomains ] = useState([])
     const [data, setData] = useState({})
 
+
     useEffect(() => {
+
         async function getDomains() {
-            let query = "query { boards (ids: 1598927804) {items_page {cursor items {id name }}}}";
+
+            let data = localStorage.getItem("auth")
+            let auth = JSON.parse(data)
+            const buyerId = detecter(auth.email)
+            
+            let query = ""
+
+            if (buyerId === "All") {
+                query = "query { boards (ids: 1598927804) {items_page {cursor items {id name }}}}"
+            } else {
+                query = `query { items_page_by_column_values (limit: 50, board_id: 1598927804, columns: [{column_id: \"dropdown__1\", column_values: [\"${buyerId}\"]} ]) { cursor items { id name } } }`
+            }
+
             const token = process.env.MONDAY_API_TOKEN
+            // query = "query { boards (ids: 1598927804) {items_page {cursor items {id name }}}}";
 
             await fetch('https://api.monday.com/v2', {
                 method: 'POST',
@@ -42,8 +58,16 @@ const DomainsList = (props) => {
                  })
                 }).then(res => res.json())
                 .then(res => {
-                    let boards = res.data.boards;
-                    let domainNames = boards[0]["items_page"].items
+
+                    let domainNames = [];
+
+                    if (buyerId === "All") {
+                        let boards = res.data.boards;
+                        domainNames = boards[0]["items_page"].items
+                    } else {
+                        domainNames = res.data.items_page_by_column_values.items
+                    }
+
                     setFilteredDomains(domainNames)
                     setData(domainNames)
                     

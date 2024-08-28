@@ -74,7 +74,7 @@ export default function Home() {
             isVisible &&  <Backdrop domainid={domainId} domainname={domainName} closemodal={closeModal}/>
           }
 
-          <DomainsList showmodal={showConfigModal} />
+          <DomainsList showmodal={showConfigModal} email={userEmail}/>
 
         </Flex>
 
