@@ -1,12 +1,5 @@
 {
   "compilerOptions": {
-    "types": [
-      "node",
-      "mocha"
-    ],
-    "typeRoots": [
-        "./node_modules/@types",
-    ],
     "lib": [
       "dom",
       "dom.iterable",
