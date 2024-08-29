@@ -9,7 +9,8 @@ import { useEffect, useState } from "react"
 import {logger} from "../helpers/logger"
 import Image from "next/image"
 import {detecter} from "../helpers/buyer_detect"
-
+import axios from "axios"
+import { host } from "../host_setting"
 
 const List = styled.ul`
     & li {
@@ -25,6 +26,16 @@ const DomainsList = (props) => {
     const [filterValue, setFilterValue] = useState("")
     const [filteredDomains, setFilteredDomains ] = useState([])
     const [data, setData] = useState({})
+
+
+    const runScript = async () => {
+        try {
+            const response = await axios(`/api/run`)
+          console.log(response);
+        } catch (error) {
+          console.error('Error running script:', error);
+        }
+      };
 
 
     useEffect(() => {
@@ -141,6 +152,8 @@ const DomainsList = (props) => {
                     )
                 }
             </List>
+
+                <button type="button" onClick={runScript}>RUN</button>
 
         </Flex>
 
